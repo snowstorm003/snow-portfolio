@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
+import site from '../../data/site.json';
 import { getAllProjects, fieldNotes, noteNumber, markTodos, type Project } from '../../lib/projects';
 
 export async function getStaticPaths() {
@@ -32,7 +33,7 @@ const sheet = [
   { label: 'Scale', value: d.scale },
 ].filter((c) => c.value);
 ---
-<Base title={`${d.title} — Snow, ${'Operations & Project Manager'}`} description={d.summary.replace(/\s*\[TODO:[^\]]*\]/g, '')}>
+<Base title={`${d.title} — ${site.alias}, ${site.title}`} description={d.summary.replace(/\s*\[TODO:[^\]]*\]/g, '')}>
   <article>
     <header class="wrap intro">
       <dl class="sheet mono">
