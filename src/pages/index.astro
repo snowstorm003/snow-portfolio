@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Slate from '../components/Slate.astro';
 import FilterReel from '../components/FilterReel.astro';
+import Approach from '../components/Approach.astro';
+import Experience from '../components/Experience.astro';
+import Kit from '../components/Kit.astro';
 import { getFeaturedProjects } from '../lib/projects';
 
 const featured = await getFeaturedProjects();
@@ -13,9 +16,9 @@ const featured = await getFeaturedProjects();
     <FilterReel projects={featured} />
   </section>
 
-  <!-- Phase 3: 02 How I work (#approach), 03 Experience (#experience), 04 Kit -->
-  <div id="approach"></div>
-  <div id="experience"></div>
+  <Approach />
+  <Experience />
+  <Kit />
 </Base>
 
 <style>

@@ -1,0 +1,36 @@
+---
+import home from '../data/home.json';
+// TODO(Snow): draft copy — confirm or rewrite in src/data/home.json
+---
+<section id="approach" class="approach" aria-labelledby="approach-title">
+  <div class="wrap">
+    <h2 id="approach-title" class="section-title"><span class="mono index">02 —</span>How I work</h2>
+    <div class="cols">
+      {home.approach.items.map((item) => (
+        <div class="col">
+          <h3 class="heading">{item.heading}</h3>
+          <p>{item.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .approach { background: var(--ink); color: var(--paper); padding: 96px 0; }
+  .approach .index { color: var(--label-ink); }
+  .section-title { margin-bottom: 56px; }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 48px;
+  }
+  .col { border-top: 1px solid var(--paper); padding-top: 20px; }
+  .heading { margin-bottom: 14px; }
+  .col p { margin: 0; font-size: 18px; line-height: 1.55; color: var(--rule-light); max-width: 60ch; }
+  @media (max-width: 820px) {
+    .approach { padding: 72px 0; }
+    .section-title { margin-bottom: 40px; }
+    .cols { gap: 40px; }
+  }
+</style>
