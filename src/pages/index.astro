@@ -1,16 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
+import Slate from '../components/Slate.astro';
+import FilterReel from '../components/FilterReel.astro';
+import { getFeaturedProjects } from '../lib/projects';
+
+const featured = await getFeaturedProjects();
 ---
 <Base>
-  <!-- Phase 2: slate hero + 01 Selected work -->
-  <!-- Phase 3: 02 How I work (#approach), 03 Experience (#experience), 04 Kit -->
-  <section id="work" class="wrap placeholder" aria-label="Selected work (coming in phase 2)">
-    <p class="mono">[ Phase 1 scaffold — home sections arrive in phases 2 &amp; 3 ]</p>
+  <Slate />
+
+  <section id="work" class="wrap work" aria-labelledby="work-title">
+    <FilterReel projects={featured} />
   </section>
+
+  <!-- Phase 3: 02 How I work (#approach), 03 Experience (#experience), 04 Kit -->
   <div id="approach"></div>
   <div id="experience"></div>
 </Base>
 
 <style>
-  .placeholder { padding-block: 160px; text-align: center; }
+  .work { padding-top: 72px; padding-bottom: 110px; }
 </style>

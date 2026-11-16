@@ -1,0 +1,73 @@
+---
+import { thumbnailFor, filterValue, type Project } from '../lib/projects';
+
+interface Props { project: Project; }
+const { project } = Astro.props;
+const d = project.data;
+const thumb = thumbnailFor(project);
+const isVideo = d.kind === 'Video';
+const alt = d.youtubeId ? `Video thumbnail: ${d.title}` : d.heroAlt || `${d.title}`;
+---
+<li class="frame-item" data-category={filterValue(d.category)}>
+  <a href={`/work/${project.id}`} class="frame">
+    <div class="thumb">
+      {thumb && <img src={thumb} alt={alt} width="480" height="270" loading="lazy" decoding="async" />}
+      <span class="mono tag">{d.kind}</span>
+      {isVideo && (
+        <svg class="play" width="44" height="44" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="2" />
+          <path d="M26 21 L44 32 L26 43 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      )}
+      {!thumb && <span class="mono ph">[ {d.placeholder || 'Media'} ]</span>}
+    </div>
+    <span class="title">{d.title}</span>
+    <span class="mono meta">{d.meta}</span>
+  </a>
+</li>
+
+<style>
+  .frame-item { list-style: none; }
+  .frame {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    color: var(--paper);
+    text-decoration: none;
+  }
+  .frame:hover { color: var(--paper); }
+  .thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--soft-ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    overflow: hidden;
+  }
+  .thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ph { color: var(--label-ink); font-size: 11px; }
+  .tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    font-size: 11px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 2px 7px;
+  }
+  .play { position: relative; color: var(--paper); }
+  .title { font-weight: 700; font-size: 19px; line-height: 1.2; }
+  .meta { font-size: 12px; color: var(--label-ink); }
+  .frame:hover .meta, .frame:focus-visible .meta { color: var(--paper); }
+  .frame:hover .title { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+</style>
