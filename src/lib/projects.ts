@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { todoHtml, isEmptyHtml } from './todos';
 
 export type Project = CollectionEntry<'projects'>;
 
@@ -34,22 +35,18 @@ export interface FieldNote { id: string; label: string; html: string; }
 
 const NOTE_ORDER = ['the-brief', 'what-made-it-hard', 'what-we-did', 'what-went-wrong'];
 
-/** Wrap "[TODO: …]" markers so they stay visible but read as placeholders. */
-export const markTodos = (html: string) =>
-  html.replace(/\[TODO:[^\]]*\]/g, (m) => `<span class="todo-mark">${m}</span>`);
-
 /**
  * Split the rendered Markdown body into the four field-note sections by their H2s.
- * Sections that are missing or empty are dropped.
+ * Sections that are missing or empty (including empty once TODOs are hidden) are dropped.
  */
 export function fieldNotes(p: Project): FieldNote[] {
   const html = p.rendered?.html ?? '';
   const parts = html.split(/<h2 id="([^"]+)">([\s\S]*?)<\/h2>/);
   const notes: FieldNote[] = [];
   for (let i = 1; i < parts.length; i += 3) {
-    const body = parts[i + 2].trim();
-    if (!body.replace(/<[^>]+>/g, '').trim()) continue;
-    notes.push({ id: parts[i], label: parts[i + 1].replace(/<[^>]+>/g, ''), html: markTodos(body) });
+    const body = todoHtml(parts[i + 2].trim());
+    if (isEmptyHtml(body)) continue;
+    notes.push({ id: parts[i], label: parts[i + 1].replace(/<[^>]+>/g, ''), html: body });
   }
   return notes.sort((a, b) => {
     const ia = NOTE_ORDER.indexOf(a.id), ib = NOTE_ORDER.indexOf(b.id);

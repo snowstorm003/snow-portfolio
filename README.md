@@ -35,8 +35,8 @@ npm run preview
 
 | What | File |
 |---|---|
-| Name, title, studio, email, phone, socials, **CTA label** | `src/data/site.json` |
-| “How I work”, Experience rows, Kit | `src/data/home.json` |
+| Name, title, studio, email, phone, socials, **CTA label**, **`SHOW_TODOS`** | `src/data/site.json` |
+| “How I work”, Experience rows, Kit (shown in the order listed: Ops → AI → Live → Edit) | `src/data/home.json` |
 | Projects (one file each) | `src/content/projects/*.md` |
 | Project fields (the schema) | `src/content.config.ts` |
 | Colours, type, buttons | `src/styles/global.css` |
@@ -90,7 +90,16 @@ order: 9                  # position in the reel and in /work
 ## What went wrong
 ```
 
-Anything written as `[TODO: …]` stays visible (in grey) so gaps are easy to spot.
+Anything written as `[TODO: …]` stays visible (in grey) so gaps are easy to spot — see `SHOW_TODOS` below.
+
+### Hide the TODOs (`SHOW_TODOS`)
+`SHOW_TODOS` in `src/data/site.json` defaults to `true`, which shows every `[TODO …]` marker in grey while content is being filled in. Set it to `false` before launch and rebuild:
+
+- every `[TODO …]` text is removed, and anything left empty is hidden (a call-sheet cell, a credit, a whole field-note section, a Kit cell, an Experience row with no organisation);
+- the footer **YouTube** link is hidden while `socials.youtube` is empty;
+- the **Download CV** button and footer **CV** link are hidden while `public/cv.pdf` is still the placeholder (the build checks the file for the placeholder's marker text).
+
+Placeholder frames on the film strip stay either way.
 
 ### Set a YouTube video
 Take the ID from the video URL (`https://www.youtube.com/watch?v=`**`aqz-KE-bpKQ`**) and put it in the project's frontmatter:

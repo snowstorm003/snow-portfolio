@@ -130,6 +130,12 @@ button { font: inherit; color: inherit; border-radius: 0; }
 
 .todo { color: var(--graphite); }
 
+/* "[TODO …]" markers (shown while SHOW_TODOS is true in site.json). */
+.todo-mark { color: var(--graphite); }
+.site-footer .todo-mark,
+.band .todo-mark,
+.approach .todo-mark { color: var(--label-ink); }
+
 .visually-hidden {
   position: absolute !important;
   width: 1px; height: 1px;
