@@ -7,9 +7,26 @@ import Experience from '../components/Experience.astro';
 import Kit from '../components/Kit.astro';
 import { getFeaturedProjects } from '../lib/projects';
 
+import site from '../data/site.json';
+
 const featured = await getFeaturedProjects();
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  alternateName: site.alias,
+  jobTitle: site.title,
+  url: new URL('/', Astro.site).href,
+  email: `mailto:${site.email}`,
+  telephone: site.phone.replace(/\s+/g, ''),
+  address: { '@type': 'PostalAddress', addressCountry: 'IN' },
+  worksFor: { '@type': 'Organization', name: site.studio },
+  sameAs: Object.values(site.socials).filter(Boolean),
+};
 ---
 <Base>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(person)} />
   <Slate />
 
   <section id="work" class="wrap work" aria-labelledby="work-title">
