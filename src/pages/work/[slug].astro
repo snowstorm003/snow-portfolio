@@ -2,7 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 import site from '../../data/site.json';
-import { getAllProjects, fieldNotes, noteNumber, markTodos, type Project } from '../../lib/projects';
+import { getAllProjects, fieldNotes, noteNumber, type Project } from '../../lib/projects';
+import { SHOW_TODOS, todoText, todoHtml } from '../../lib/todos';
 
 export async function getStaticPaths() {
   const all = await getAllProjects();
@@ -25,27 +26,37 @@ const notes = fieldNotes(project);
 const pad = (n: number) => String(n).padStart(2, '0');
 const isVideo = d.kind === 'Video';
 
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** Escape, then mark (or strip) TODOs according to SHOW_TODOS. */
+const t = (s: string) => todoHtml(esc(s));
+/** Keep an item only if it still has text once TODOs are hidden. */
+const visible = (s: string) => Boolean(todoText(s));
+
 const sheet = [
   { label: 'Production', value: d.title },
   { label: 'Year', value: d.year },
   { label: 'Format', value: d.format },
   { label: 'Role', value: d.role },
   { label: 'Scale', value: d.scale },
-].filter((c) => c.value);
+].filter((c) => c.value && visible(c.value));
+const summary = t(d.summary);
+const numbers = d.numbers.filter((n) => visible(n.value));
+const credits = d.credits.filter((c) => visible(c.name));
+const description = d.summary.replace(/\s*\[TODO\b[^\]]*\]/g, '').trim() || site.title;
 ---
-<Base title={`${d.title} — ${site.alias}, ${site.title}`} description={d.summary.replace(/\s*\[TODO:[^\]]*\]/g, '')}>
+<Base title={`${d.title} — ${site.alias}, ${site.title}`} description={description}>
   <article>
     <header class="wrap intro">
       <dl class="sheet mono">
         {sheet.map((c) => (
-          <div class="sheet-cell"><dt>{c.label}</dt><dd set:html={markTodos(c.value)} /></div>
+          <div class="sheet-cell"><dt>{c.label}</dt><dd set:html={t(c.value)} /></div>
         ))}
         <div class="sheet-cell"><dt>Project</dt><dd class="accent">{pad(index + 1)} / {pad(total)}</dd></div>
       </dl>
 
       {d.status && <p class="mono status"><span class="dot" aria-hidden="true"></span>{d.status}</p>}
       <h1 class="display title">{d.title}</h1>
-      <p class="summary" set:html={markTodos(d.summary)} />
+      {summary && <p class="summary" set:html={summary} />}
     </header>
 
     <section class="wrap media-wrap" aria-label={isVideo ? 'Final film' : 'Main image'}>
@@ -62,11 +73,11 @@ const sheet = [
         <div class="media media--ink media--ph">
           <span class="mono media-label"><span class="dot" aria-hidden="true"></span>Final cut</span>
           <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="1.5" /><path d="M26 21 L44 32 L26 43 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /></svg>
-          <span class="mono ph-text">[TODO: YouTube ID — published final cut]</span>
+          <span class="mono ph-text">{SHOW_TODOS ? '[TODO: YouTube ID — published final cut]' : `[ ${d.placeholder || 'YouTube'} ]`}</span>
         </div>
       ) : (
         <div class="media media--stock media--ph">
-          <span class="mono ph-text">[TODO: {d.placeholder || 'hero image'}]</span>
+          <span class="mono ph-text">{SHOW_TODOS ? `[TODO: ${d.placeholder || 'hero image'}]` : `[ ${d.placeholder || 'Image'} ]`}</span>
         </div>
       )}
     </section>
@@ -90,25 +101,25 @@ const sheet = [
       </section>
     )}
 
-    {(d.numbers.length > 0 || d.credits.length > 0) && (
+    {(numbers.length > 0 || credits.length > 0) && (
       <section class="band">
         <div class="wrap band-grid">
-          {d.numbers.length > 0 && (
+          {numbers.length > 0 && (
             <div>
               <h2 class="mono band-label">On the sheet</h2>
               <dl class="numbers">
-                {d.numbers.map((n) => (
-                  <div><dt class="mono">{n.label}</dt><dd class="number">{n.value}</dd></div>
+                {numbers.map((n) => (
+                  <div><dt class="mono">{n.label}</dt><dd class="number" set:html={t(n.value)} /></div>
                 ))}
               </dl>
             </div>
           )}
-          {d.credits.length > 0 && (
+          {credits.length > 0 && (
             <div>
               <h2 class="mono band-label">Credits</h2>
               <dl class="credits mono">
-                {d.credits.map((c) => (
-                  <div class="credit-row"><dt>{c.role}</dt><dd set:html={markTodos(c.name)} /></div>
+                {credits.map((c) => (
+                  <div class="credit-row"><dt>{c.role}</dt><dd set:html={t(c.name)} /></div>
                 ))}
               </dl>
             </div>
@@ -190,7 +201,6 @@ const sheet = [
   .note-body { max-width: 60ch; }
   .note-body :global(p) { margin: 0 0 16px; font-size: 21px; line-height: 1.55; }
   .note-body :global(p:last-child) { margin-bottom: 0; }
-  :global(.todo-mark) { color: var(--graphite); }
 
   /* Stills */
   .stills {
@@ -212,7 +222,6 @@ const sheet = [
   .credit-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; border-bottom: 1px solid var(--soft-ink); }
   .credit-row dt { padding: 12px 0; }
   .credit-row dd { margin: 0; padding: 12px 0; color: var(--paper); }
-  .band :global(.todo-mark) { color: var(--label-ink); }
 
   /* Previous / next */
   .pager { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-top: 48px; padding-bottom: 64px; }

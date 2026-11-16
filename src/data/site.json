@@ -12,5 +12,6 @@
     "x": "https://x.com/snowstorm003",
     "telegram": "https://t.me/snowstorm003",
     "youtube": ""
-  }
+  },
+  "SHOW_TODOS": true
 }

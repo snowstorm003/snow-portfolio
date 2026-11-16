@@ -17,18 +17,51 @@
     ]
   },
   "experience": [
-    { "role": "Creative Project Manager · Head of IRL", "org": "Little Unusual", "dates": "Oct 2024 — Now · 19-person team" },
-    { "role": "Operations", "org": "Hack4Bengal", "dates": "Jan 2022 — Jul 2025" },
-    { "role": "Social Media & Publishing Associate", "org": "[TODO: company]", "dates": "[TODO: dates] · Canva · WordPress · Admin" },
-    { "role": "Community Manager", "org": "Kratos Gaming Network", "dates": "Oct 2022 — Apr 2023" },
-    { "role": "Education", "org": "B.Tech, Computer Science", "dates": "[TODO: college · year]" }
+    {
+      "role": "Creative Project Manager · Head of IRL",
+      "org": "Little Unusual",
+      "dates": "Oct 2024 — Now · 19-person team"
+    },
+    {
+      "role": "Operations",
+      "org": "Hack4Bengal",
+      "dates": "Jan 2022 — Jul 2025"
+    },
+    {
+      "role": "Social Media & Publishing Associate",
+      "org": "[TODO: company]",
+      "dates": "[TODO: dates] · Canva · WordPress · Admin"
+    },
+    {
+      "role": "Community Manager",
+      "org": "Kratos Gaming Network",
+      "dates": "Oct 2022 — Apr 2023"
+    },
+    {
+      "role": "Education",
+      "org": "B.Tech, Computer Science",
+      "dates": "[TODO: college · year]"
+    }
   ],
   "kit": {
-    "_todo": "Snow may add AI tools here.",
+    "_todo": "Fill in the AI tools you use.",
     "items": [
-      { "label": "Edit", "value": "Premiere · DaVinci · After Effects" },
-      { "label": "Live", "value": "OBS · Multi-cam switching" },
-      { "label": "Ops", "value": "Notion · Airtable · Linear" }
+      {
+        "label": "Ops",
+        "value": "Notion · Airtable · Linear"
+      },
+      {
+        "label": "AI",
+        "value": "[TODO: AI tools]"
+      },
+      {
+        "label": "Live",
+        "value": "OBS · Multi-cam switching"
+      },
+      {
+        "label": "Edit",
+        "value": "Premiere · DaVinci · After Effects"
+      }
     ]
   }
 }

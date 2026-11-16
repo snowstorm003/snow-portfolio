@@ -1,25 +1,34 @@
 ---
 import home from '../data/home.json';
+import { todoText, todoHtml, SHOW_CV } from '../lib/todos';
+
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+// A credit with no organisation left (TODOs hidden) is dropped rather than shown half-empty.
+const rows = home.experience
+  .filter((c) => todoText(c.org))
+  .map((c) => ({ role: c.role, org: todoHtml(esc(c.org)), dates: todoHtml(esc(c.dates)) }));
+// TODO(Snow): replace public/cv.pdf with the real CV — the button hides itself when SHOW_TODOS is false and the CV is still the placeholder.
 ---
 <section id="experience" class="experience wrap" aria-labelledby="experience-title">
   <h2 id="experience-title" class="section-title"><span class="mono index">03 —</span>Experience</h2>
 
   <ol class="credits" role="list">
-    {home.experience.map((c) => (
+    {rows.map((c) => (
       <li class="credit">
         <span class="mono role">{c.role}</span>
         <span class="org-block">
-          <span class="org">{c.org}</span>
-          <span class="mono dates">{c.dates}</span>
+          <span class="org" set:html={c.org} />
+          {c.dates && <span class="mono dates" set:html={c.dates} />}
         </span>
       </li>
     ))}
   </ol>
 
-  <div class="cv">
-    <!-- TODO(Snow): replace public/cv.pdf with the real CV -->
-    <a href="/cv.pdf" class="btn btn--outline mono cv-btn" download>Download CV (PDF) ↓</a>
-  </div>
+  {SHOW_CV && (
+    <div class="cv">
+      <a href="/cv.pdf" class="btn btn--outline mono cv-btn" download>Download CV (PDF) ↓</a>
+    </div>
+  )}
 </section>
 
 <style>

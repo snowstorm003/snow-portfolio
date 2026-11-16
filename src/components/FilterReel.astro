@@ -107,7 +107,15 @@ const total = projects.length;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 28px;
     overscroll-behavior-x: contain;
-    scrollbar-color: var(--soft-ink) var(--ink);
+    /* Thin, quiet scrollbar on the ink band (Firefox, Chrome 121+, Edge). */
+    scrollbar-width: thin;
+    scrollbar-color: var(--soft-ink) transparent;
+  }
+  /* Safari and older Chromium only understand the WebKit pseudo-elements. */
+  @supports not (scrollbar-color: auto) {
+    .scroller::-webkit-scrollbar { height: 6px; }
+    .scroller::-webkit-scrollbar-track { background: transparent; }
+    .scroller::-webkit-scrollbar-thumb { background: var(--soft-ink); border-radius: 0; }
   }
   .frames {
     display: flex;

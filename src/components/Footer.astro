@@ -1,5 +1,6 @@
 ---
 import site from '../data/site.json';
+import { SHOW_TODOS, SHOW_CV } from '../lib/todos';
 
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const base = isHome ? '' : '/';
@@ -12,7 +13,10 @@ const elsewhere = [
   { label: 'X', href: site.socials.x },
   { label: 'Telegram', href: site.socials.telegram },
   { label: 'YouTube', href: site.socials.youtube },
-];
+].filter((s) => s.href || SHOW_TODOS); // a link with no URL only shows while TODOs are on
+
+// Headline alternatives for Snow to pick from later:
+// "Need someone to run the messy part?" / "Let's make it run." / "Got a process that needs a producer?"
 ---
 <footer id="contact" class="site-footer">
   <div class="wrap">
@@ -23,9 +27,6 @@ const elsewhere = [
     </div>
 
     <h2 class="display headline">Got something<br />complex to run?</h2>
-    <!-- Alternatives for Snow to pick from later:
-         "Need someone to run the messy part?" / "Let's make it run." /
-         "Got a process that needs a producer?" -->
 
     <div class="cta-row">
       <a href={mailto} class="btn btn--paper mono footer-cta">
@@ -53,7 +54,7 @@ const elsewhere = [
         <a href={`${base}#work`}>Work</a>
         <a href={`${base}#approach`}>Approach</a>
         <a href={`${base}#experience`}>Experience</a>
-        <a href="/cv.pdf" download>CV (PDF) ↓</a>
+        {SHOW_CV && <a href="/cv.pdf" download>CV (PDF) ↓</a>}
       </div>
       <div class="col">
         <h3 class="mono col-label">In short</h3>

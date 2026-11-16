@@ -1,14 +1,21 @@
 ---
 import home from '../data/home.json';
-// TODO(Snow): may add AI tools here (src/data/home.json → kit.items)
+import { todoText, todoHtml } from '../lib/todos';
+
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+// Order lives in src/data/home.json (Ops → AI → Live → Edit).
+// A cell whose value is only a TODO is dropped when SHOW_TODOS is false.
+const cells = home.kit.items
+  .filter((k) => todoText(k.value))
+  .map((k) => ({ label: k.label, value: todoHtml(esc(k.value)) }));
 ---
 <section class="kit wrap" aria-labelledby="kit-title">
   <h2 id="kit-title" class="section-title"><span class="mono index">04 —</span>Kit</h2>
-  <dl class="cells">
-    {home.kit.items.map((k) => (
+  <dl class="cells" style={`--cols: ${cells.length}`}>
+    {cells.map((k) => (
       <div class="cell">
         <dt class="mono">{k.label}</dt>
-        <dd>{k.value}</dd>
+        <dd set:html={k.value} />
       </div>
     ))}
   </dl>
@@ -17,21 +24,29 @@ import home from '../data/home.json';
 <style>
   .kit { padding-bottom: 110px; }
   .section-title { margin-bottom: 28px; }
+
+  /* Hairline grid: top rule on the list, a bottom rule under every cell,
+     and a left rule on every cell that isn't first in its row. */
   .cells {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
     margin: 0;
     border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
   }
-  .cell { padding: 20px 24px; border-left: 1px solid var(--ink); }
+  .cell { padding: 20px 24px; border-bottom: 1px solid var(--ink); border-left: 1px solid var(--ink); min-width: 0; }
   .cell:first-child { border-left: none; padding-left: 0; }
   dt { margin-bottom: 8px; }
   dd { margin: 0; font-size: 20px; line-height: 1.4; }
 
+  /* Tablet: two per row. */
+  @media (max-width: 1100px) {
+    .cells { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cell:nth-child(odd) { border-left: none; padding-left: 0; }
+  }
+  /* Phone: one per row. */
   @media (max-width: 820px) {
     .kit { padding-bottom: 80px; }
-    .cells { grid-template-columns: minmax(0, 1fr); border-bottom: none; }
-    .cell { border-left: none; padding: 20px 0; border-bottom: 1px solid var(--ink); }
+    .cells { grid-template-columns: minmax(0, 1fr); }
+    .cell { border-left: none; padding: 20px 0; }
   }
 </style>
