@@ -9,6 +9,7 @@ interface Props {
   headingLevel?: 'h1' | 'h2';
   showFooterLinks?: boolean;
   headingId?: string;
+  variant?: 'strip' | 'grid';
 }
 const {
   projects,
@@ -17,6 +18,7 @@ const {
   headingLevel: H = 'h2',
   showFooterLinks = true,
   headingId = 'work-title',
+  variant = 'strip',
 } = Astro.props;
 const total = projects.length;
 ---
@@ -36,16 +38,25 @@ const total = projects.length;
     ))}
   </div>
 
-  <div class="strip">
-    <div class="sprockets" aria-hidden="true"></div>
-    <div class="scroller" data-scroller>
-      <ul class="frames" role="list">
-        {projects.map((p) => <ProjectFrame project={p} />)}
-      </ul>
-      <p class="mono empty" data-empty hidden>Nothing on this reel yet.</p>
+  {variant === 'strip' ? (
+    <div class="strip">
+      <div class="sprockets" aria-hidden="true"></div>
+      <div class="scroller" data-scroller>
+        <ul class="frames" role="list">
+          {projects.map((p) => <ProjectFrame project={p} />)}
+        </ul>
+        <p class="mono empty" data-empty hidden>Nothing on this reel yet.</p>
+      </div>
+      <div class="sprockets" aria-hidden="true"></div>
     </div>
-    <div class="sprockets" aria-hidden="true"></div>
-  </div>
+  ) : (
+    <div>
+      <ul class="grid" role="list">
+        {projects.map((p) => <ProjectFrame project={p} variant="grid" />)}
+      </ul>
+      <p class="mono empty empty--paper" data-empty hidden>Nothing on this reel yet.</p>
+    </div>
+  )}
 
   {showFooterLinks && (
     <div class="mono reel-foot">
@@ -108,6 +119,17 @@ const total = projects.length;
   .frames :global(.frame-item) { flex: none; width: 300px; scroll-snap-align: start; }
   .frames :global(.frame-item[hidden]) { display: none; }
   .empty { color: var(--label-ink); padding: 0 28px 24px; margin: 0; }
+
+  /* ---- Grid (/work) ---- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 40px 28px;
+    margin: 0;
+    padding: 0;
+  }
+  .grid :global(.frame-item[hidden]) { display: none; }
+  .empty--paper { color: var(--graphite); padding: 0; }
 
   .reel-foot {
     display: flex;
