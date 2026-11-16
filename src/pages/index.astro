@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import Slate from '../components/Slate.astro';
+import FilterReel from '../components/FilterReel.astro';
+import Approach from '../components/Approach.astro';
+import Experience from '../components/Experience.astro';
+import Kit from '../components/Kit.astro';
+import { getFeaturedProjects } from '../lib/projects';
+
+const featured = await getFeaturedProjects();
+---
+<Base>
+  <Slate />
+
+  <section id="work" class="wrap work" aria-labelledby="work-title">
+    <FilterReel projects={featured} />
+  </section>
+
+  <Approach />
+  <Experience />
+  <Kit />
+</Base>
+
+<style>
+  .work { padding-top: 72px; padding-bottom: 110px; }
+</style>

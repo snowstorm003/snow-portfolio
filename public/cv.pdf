@@ -1,0 +1,45 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 291 >>
+stream
+0.933 0.922 0.890 rg 0 0 595 842 re f
+0.082 0.082 0.082 rg
+BT /F2 11 Tf 72 770 Td (SNOW  -  CV) Tj ET
+BT /F1 28 Tf 72 720 Td (TUSHAR MUKHOPADHYAY) Tj ET
+BT /F2 11 Tf 72 696 Td (OPERATIONS & PROJECT MANAGER) Tj ET
+BT /F2 11 Tf 72 640 Td ([TODO: replace public/cv.pdf with the real CV]) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+7 0 obj
+<< /Title (Tushar Mukhopadhyay - CV \(placeholder\)) >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000000592 00000 n 
+0000000667 00000 n 
+0000000735 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R /Info 7 0 R >>
+startxref
+806
+%%EOF

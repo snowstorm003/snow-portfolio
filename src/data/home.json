@@ -1,0 +1,34 @@
+{
+  "approach": {
+    "_todo": "Draft copy, ops-first. TODO: Snow to confirm.",
+    "items": [
+      {
+        "heading": "Plan before anything moves",
+        "body": "Most projects are won or lost in the plan, weeks before anyone shows up."
+      },
+      {
+        "heading": "Small systems, big teams",
+        "body": "SOPs, trackers and automations that cut reporting by 3+ hours a week, so a 19-person team doesn’t need me in every call."
+      },
+      {
+        "heading": "Build the tool when the tool doesn’t fit",
+        "body": "When off-the-shelf software makes a team work around it, I build our own, increasingly with AI."
+      }
+    ]
+  },
+  "experience": [
+    { "role": "Creative Project Manager · Head of IRL", "org": "Little Unusual", "dates": "Oct 2024 — Now · 19-person team" },
+    { "role": "Operations", "org": "Hack4Bengal", "dates": "Jan 2022 — Jul 2025" },
+    { "role": "Social Media & Publishing Associate", "org": "[TODO: company]", "dates": "[TODO: dates] · Canva · WordPress · Admin" },
+    { "role": "Community Manager", "org": "Kratos Gaming Network", "dates": "Oct 2022 — Apr 2023" },
+    { "role": "Education", "org": "B.Tech, Computer Science", "dates": "[TODO: college · year]" }
+  ],
+  "kit": {
+    "_todo": "Snow may add AI tools here.",
+    "items": [
+      { "label": "Edit", "value": "Premiere · DaVinci · After Effects" },
+      { "label": "Live", "value": "OBS · Multi-cam switching" },
+      { "label": "Ops", "value": "Notion · Airtable · Linear" }
+    ]
+  }
+}

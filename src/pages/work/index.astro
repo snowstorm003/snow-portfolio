@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import FilterReel from '../../components/FilterReel.astro';
+import { getAllProjects } from '../../lib/projects';
+
+const projects = await getAllProjects();
+---
+<Base
+  title="All work — Snow, Operations & Project Manager"
+  description="Every project Tushar “Snow” Mukhopadhyay has run: operations systems, AI tooling, events, communities and productions."
+>
+  <section class="wrap all-work">
+    <FilterReel
+      projects={projects}
+      variant="grid"
+      headingLevel="h1"
+      index="Index —"
+      title="All work"
+      showFooterLinks={false}
+    />
+  </section>
+</Base>
+
+<style>
+  .all-work { padding-top: 48px; padding-bottom: 110px; }
+</style>

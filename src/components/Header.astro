@@ -1,0 +1,119 @@
+---
+import site from '../data/site.json';
+
+// On the home page the nav uses in-page anchors; elsewhere it links back to /#…
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const base = isHome ? '' : '/';
+const links = [
+  { label: 'Work', href: `${base}#work` },
+  { label: 'Approach', href: `${base}#approach` },
+  { label: 'Experience', href: `${base}#experience` },
+  { label: 'Contact', href: `${base}#contact` },
+];
+---
+<header class="site-header wrap">
+  <a href="/" class="wordmark" aria-label={`${site.alias} — home`}>SNOW</a>
+
+  <button
+    type="button"
+    class="menu-toggle mono"
+    aria-expanded="false"
+    aria-controls="site-nav"
+  >Menu</button>
+
+  <nav id="site-nav" class="site-nav mono" aria-label="Main">
+    <ul>
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </nav>
+
+  <a href="#contact" class="btn btn--ink mono header-cta">
+    <span class="dot" aria-hidden="true"></span>{site.ctaLabel}
+  </a>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 22px;
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 800;
+    font-stretch: 72%;
+    font-size: 26px;
+    letter-spacing: .02em;
+    text-decoration: none;
+  }
+  .site-nav ul {
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .site-nav a:hover { color: var(--accent); }
+  .header-cta { color: var(--paper); }
+
+  .menu-toggle {
+    display: none;
+    min-height: 44px;
+    padding: 0 16px;
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  @media (max-width: 820px) {
+    .site-header { flex-wrap: wrap; gap: 12px; }
+    .wordmark { margin-right: auto; }
+    .header-cta { order: 2; }
+    .site-nav { order: 3; flex-basis: 100%; }
+    .site-nav ul {
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--ink);
+    }
+    .site-nav li { border-bottom: 1px solid var(--rule-light); }
+    .site-nav a { width: 100%; }
+
+    /* Only collapse when JS is available to reopen it. */
+    :global(.js) .menu-toggle { display: inline-flex; align-items: center; order: 1; }
+    :global(.js) .site-nav { display: none; }
+    :global(.js) .site-nav.is-open { display: block; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    const set = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+    };
+    toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) set(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        set(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,155 @@
+---
+import site from '../data/site.json';
+
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const base = isHome ? '' : '/';
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent('Let’s talk')}`;
+const tel = `tel:${site.phone.replace(/\s+/g, '')}`;
+const year = new Date().getFullYear();
+
+const elsewhere = [
+  { label: 'LinkedIn', href: site.socials.linkedin },
+  { label: 'X', href: site.socials.x },
+  { label: 'Telegram', href: site.socials.telegram },
+  { label: 'YouTube', href: site.socials.youtube },
+];
+---
+<footer id="contact" class="site-footer">
+  <div class="wrap">
+    <div class="strip mono">
+      <span class="strip-contact"><span class="dot" aria-hidden="true"></span>Contact</span>
+      <span>Open to operations, AI &amp; creative project roles</span>
+      <span>Remote / hybrid · {site.base}</span>
+    </div>
+
+    <h2 class="display headline">Got something<br />complex to run?</h2>
+    <!-- Alternatives for Snow to pick from later:
+         "Need someone to run the messy part?" / "Let's make it run." /
+         "Got a process that needs a producer?" -->
+
+    <div class="cta-row">
+      <a href={mailto} class="btn btn--paper mono footer-cta">
+        <span class="dot" aria-hidden="true"></span>{site.ctaLabel} →
+      </a>
+      <a href={`mailto:${site.email}`} class="email-link">{site.email}</a>
+    </div>
+
+    <div class="cols">
+      <div class="col">
+        <h3 class="mono col-label">Direct</h3>
+        <a href={`mailto:${site.email}`}>Email</a>
+        <a href={tel}>{site.phone}</a>
+      </div>
+      <div class="col">
+        <h3 class="mono col-label">Elsewhere</h3>
+        {elsewhere.map((s) =>
+          s.href
+            ? <a href={s.href} rel="me noopener" target="_blank">{s.label} ↗<span class="visually-hidden"> (opens in a new tab)</span></a>
+            : <span class="col-item">{s.label} ↗ <span class="mono todo-dark">[TODO: URL]</span></span>
+        )}
+      </div>
+      <div class="col">
+        <h3 class="mono col-label">Site</h3>
+        <a href={`${base}#work`}>Work</a>
+        <a href={`${base}#approach`}>Approach</a>
+        <a href={`${base}#experience`}>Experience</a>
+        <a href="/cv.pdf" download>CV (PDF) ↓</a>
+      </div>
+      <div class="col">
+        <h3 class="mono col-label">In short</h3>
+        <p class="in-short">Operations, production and AI workflows — for product teams and creative studios.</p>
+        <a href="#top" class="mono back-top">Back to top ↑</a>
+      </div>
+    </div>
+
+    <div class="credits-row mono">
+      <span class="wrap-line">That’s a wrap.</span>
+      <span>Produced, directed &amp; over-planned by {site.name}</span>
+      <span>© {year}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 96px 0 28px;
+  }
+  .site-footer .mono { color: var(--label-ink); }
+  .site-footer a { color: var(--paper); text-decoration: none; }
+  .site-footer a:hover { color: var(--paper); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+
+  .strip {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px 16px;
+    flex-wrap: wrap;
+    border-block: 1px solid var(--soft-ink);
+    padding: 10px 0;
+  }
+  .strip-contact { display: inline-flex; align-items: center; gap: 10px; }
+
+  .headline {
+    margin-top: 48px;
+    font-stretch: 66%;
+    font-size: clamp(56px, 10vw, 150px);
+    line-height: .86;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+    margin-top: 40px;
+  }
+  .site-footer .footer-cta {
+    min-height: 52px;
+    padding: 0 26px;
+    color: var(--ink);
+  }
+  .site-footer .footer-cta:hover { color: var(--ink); text-decoration: none; }
+  .site-footer .email-link {
+    font-size: 20px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 2px;
+    overflow-wrap: anywhere;
+  }
+  .site-footer .email-link:hover { text-decoration: none; border-bottom-color: var(--paper); }
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+    margin-top: 88px;
+    padding-top: 28px;
+    border-top: 1px solid var(--soft-ink);
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .col-label { margin: 0 0 4px; font-weight: 400; }
+  .col a, .col-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+  }
+  .todo-dark { font-size: 11px; }
+  .in-short { margin: 8px 0 4px; color: var(--rule-light); line-height: 1.5; font-size: 16px; }
+  .site-footer .back-top { color: var(--paper); }
+
+  .credits-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 72px;
+    padding-top: 18px;
+    border-top: 1px solid var(--soft-ink);
+  }
+  .site-footer .wrap-line { color: var(--paper); }
+</style>

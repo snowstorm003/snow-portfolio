@@ -1,0 +1,37 @@
+---
+import home from '../data/home.json';
+// TODO(Snow): may add AI tools here (src/data/home.json → kit.items)
+---
+<section class="kit wrap" aria-labelledby="kit-title">
+  <h2 id="kit-title" class="section-title"><span class="mono index">04 —</span>Kit</h2>
+  <dl class="cells">
+    {home.kit.items.map((k) => (
+      <div class="cell">
+        <dt class="mono">{k.label}</dt>
+        <dd>{k.value}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .kit { padding-bottom: 110px; }
+  .section-title { margin-bottom: 28px; }
+  .cells {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .cell { padding: 20px 24px; border-left: 1px solid var(--ink); }
+  .cell:first-child { border-left: none; padding-left: 0; }
+  dt { margin-bottom: 8px; }
+  dd { margin: 0; font-size: 20px; line-height: 1.4; }
+
+  @media (max-width: 820px) {
+    .kit { padding-bottom: 80px; }
+    .cells { grid-template-columns: minmax(0, 1fr); border-bottom: none; }
+    .cell { border-left: none; padding: 20px 0; border-bottom: 1px solid var(--ink); }
+  }
+</style>

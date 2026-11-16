@@ -1,0 +1,64 @@
+---
+interface Props { id: string; title: string; }
+const { id, title } = Astro.props;
+const thumb = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+---
+<!-- Lite embed: thumbnail + play button; the youtube-nocookie iframe loads only on click.
+     Without JS it is a plain link to the video on YouTube. -->
+<a
+  class="lite-yt"
+  href={`https://www.youtube.com/watch?v=${id}`}
+  data-yt-id={id}
+  data-yt-title={title}
+>
+  <img src={thumb} alt="" width="480" height="360" loading="lazy" decoding="async" />
+  <span class="play" aria-hidden="true">
+    <svg width="72" height="72" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="31" fill="#151515" stroke="currentColor" stroke-width="1.5" />
+      <path d="M26 21 L44 32 L26 43 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+    </svg>
+  </span>
+  <span class="visually-hidden">Play video: {title}</span>
+</a>
+
+<style>
+  .lite-yt {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--paper);
+    background: var(--ink);
+    cursor: pointer;
+  }
+  .lite-yt img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .play { position: relative; transition: transform .12s; }
+  .lite-yt:hover .play { color: var(--paper); transform: scale(1.06); }
+  .lite-yt:hover .play circle { stroke: var(--accent); }
+  :global(.lite-yt-frame) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-yt-id]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = el.dataset.ytId!;
+      const iframe = document.createElement('iframe');
+      iframe.className = 'lite-yt-frame';
+      iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
+      iframe.title = el.dataset.ytTitle || 'YouTube video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      el.replaceWith(iframe);
+      iframe.focus();
+    });
+  });
+</script>
